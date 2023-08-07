@@ -46,6 +46,11 @@ def glados_checkin(driver):
     resp = json.loads(resp["response"])
     return resp["code"], resp["message"]
 
+def glados_checkin_simulate(driver):
+    script = "document.getElementsByClassName('button')[0].click()"
+    driver.execute_script(script)
+    return 0, "Good click"
+
 def glados_status(driver):
     status_url = "https://glados.rocks/api/user/status"    
     status_query = """
@@ -95,10 +100,13 @@ def glados(cookie_string):
     
     message = str()
 
-    checkin_code, checkin_message = glados_checkin(driver)
-    if checkin_code == -2: checkin_message = "Login fails, please check your cookie."
-    message = f"{message}【Checkin】{checkin_message}\n"
-    print(f"【Checkin】{checkin_message}")
+    # checkin_code, checkin_message = glados_checkin(driver)
+    # if checkin_code == -2: checkin_message = "Login fails, please check your cookie."
+    # message = f"{message}【Checkin】{checkin_message}\n"
+    # print(f"【Checkin】{checkin_message}")
+    driver.get("https://glados.rocks/console/checkin")
+    checkin_code, checkin_message = glados_checkin_simulate(driver)
+    print("【Checkin】Clicked the button")
 
     if checkin_code != -2:
         status_code, status_data = glados_status(driver)
