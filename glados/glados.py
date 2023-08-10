@@ -8,6 +8,7 @@ sys.stdout = io.TextIOWrapper(sys.stdout.buffer,encoding='utf-8')
 
 import undetected_chromedriver as uc
 from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.remote.webdriver import By
 
 def get_driver_version():
     system = platform.system()
@@ -45,11 +46,6 @@ def glados_checkin(driver):
     resp = driver.execute_script("return " + checkin_query)
     resp = json.loads(resp["response"])
     return resp["code"], resp["message"]
-
-def glados_checkin_simulate(driver):
-    script = "document.getElementsByClassName('button')[0].click()"
-    driver.execute_script(script)
-    return 0, "Good click"
 
 def glados_status(driver):
     status_url = "https://glados.rocks/api/user/status"    
@@ -109,9 +105,16 @@ def glados(cookie_string):
     print(f"【Status】Old left days:{old_left_days}")
 
     driver.get("https://glados.rocks/console/checkin")
-    checkin_code, checkin_message = glados_checkin_simulate(driver)
+    driver.find_element(By.CLASS_NAME, "button").click()
     print("【Checkin】Clicked the button")
 
+    checkin_content = driver.find_elements(By.CLASS_NAME, "content")[1]
+    WebDriverWait(driver, 10).until(
+        lambda d: not checkin_content.text.endswith("Checkin to get more days.")
+    )
+    print(f"【Checkin】Message content: {checkin_content.text}")
+
+    checkin_code = 0
     if checkin_code != -2:
         status_code, status_data = glados_status(driver)
         left_days = int(float(status_data["leftDays"]))
