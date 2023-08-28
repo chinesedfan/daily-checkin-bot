@@ -67,7 +67,7 @@ def glados(cookie_string):
     options.add_argument("--disable-popup-blocking")
       
     version = get_driver_version()
-    driver = uc.Chrome(version_main = 114, options = options)
+    driver = uc.Chrome(version_main = version, options = options)
 
     # Load cookie
     driver.get("https://glados.rocks")
