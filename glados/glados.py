@@ -121,7 +121,7 @@ def glados(cookie_string):
         print(f"【Status】Left days:{left_days}")
         message = f"{message}【Status】Left days:{left_days}\n"
 
-        if left_days != old_left_days + 1:
+        if left_days != old_left_days + 1 and (not "success" in checkin_content.text):
             checkin_code = 2 # checkin fail
 
     driver.close()
