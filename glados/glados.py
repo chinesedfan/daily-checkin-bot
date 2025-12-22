@@ -8,6 +8,7 @@ sys.stdout = io.TextIOWrapper(sys.stdout.buffer,encoding='utf-8')
 
 import undetected_chromedriver as uc
 from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.remote.webdriver import By
 
 def get_driver_version():
@@ -105,13 +106,14 @@ def glados(cookie_string):
     print(f"【Status】Old left days:{old_left_days}")
 
     driver.get("https://glados.rocks/console/checkin")
-    driver.find_element(By.CLASS_NAME, "button").click()
+    driver.find_elements(By.CLASS_NAME, "button")[3].click()
     print("【Checkin】Clicked the button")
 
-    checkin_content = driver.find_elements(By.CLASS_NAME, "content")[1]
+    s_checkin_content = "//div[@class='six wide column']/div[@class='ui center aligned segment']/div[2]/div/p"
     WebDriverWait(driver, 10).until(
-        lambda d: not checkin_content.text.endswith("Checkin to get more days.")
+        EC.presence_of_element_located((By.XPATH, s_checkin_content))
     )
+    checkin_content = driver.find_element(By.XPATH, s_checkin_content)
     print(f"【Checkin】Message content: {checkin_content.text}")
 
     checkin_code = 0
@@ -121,7 +123,7 @@ def glados(cookie_string):
         print(f"【Status】Left days:{left_days}")
         message = f"{message}【Status】Left days:{left_days}\n"
 
-        if left_days != old_left_days + 1 and (not "success" in checkin_content.text):
+        if left_days != old_left_days + 1 and (not "Got" in checkin_content.text):
             checkin_code = 2 # checkin fail
 
     driver.close()
