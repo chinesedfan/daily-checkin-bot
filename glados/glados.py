@@ -106,10 +106,10 @@ def glados(cookie_string):
     print(f"【Status】Old left days:{old_left_days}")
 
     driver.get("https://glados.rocks/console/checkin")
-    driver.find_elements(By.CLASS_NAME, "button")[4].click()
+    driver.find_elements(By.CLASS_NAME, "button")[3].click()
     print("【Checkin】Clicked the button")
 
-    s_checkin_content = "//div[@class='six wide column']/div[@class='ui center aligned segment']/div[2]/div/p"
+    s_checkin_content = "//div[@class='ui container dimmable']/div/div[@class='checkin-main-grid']/div[2]/div[2]/div/p"
     WebDriverWait(driver, 10).until(
         EC.presence_of_element_located((By.XPATH, s_checkin_content))
     )
