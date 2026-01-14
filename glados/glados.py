@@ -106,7 +106,7 @@ def glados(cookie_string):
     print(f"【Status】Old left days:{old_left_days}")
 
     driver.get("https://glados.rocks/console/checkin")
-    driver.find_elements(By.CLASS_NAME, "button")[3].click()
+    driver.find_elements(By.TAG_NAME, "button")[3].click()
     print("【Checkin】Clicked the button")
 
     s_checkin_content = "//div[@class='ui container dimmable']/div/div[@class='checkin-main-grid']/div[2]/div[2]/div/p"
