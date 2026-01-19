@@ -33,7 +33,7 @@ def get_driver_version():
     return out
 
 def glados_checkin(driver):
-    checkin_url = "https://glados.rocks/api/user/checkin"    
+    checkin_url = "https://glados.cloud/api/user/checkin"
     checkin_query = """
         (function (){
         var request = new XMLHttpRequest();
@@ -49,7 +49,7 @@ def glados_checkin(driver):
     return resp["code"], resp["message"]
 
 def glados_status(driver):
-    status_url = "https://glados.rocks/api/user/status"    
+    status_url = "https://glados.cloud/api/user/status"
     status_query = """
         (function (){
         var request = new XMLHttpRequest();
@@ -71,7 +71,7 @@ def glados(cookie_string):
     driver = uc.Chrome(version_main = int(version), options = options)
 
     # Load cookie
-    driver.get("https://glados.rocks")
+    driver.get("https://glados.cloud")
       
     if cookie_string.startswith("cookie:"):
         cookie_string = cookie_string[len("cookie:"):]
@@ -84,13 +84,13 @@ def glados(cookie_string):
     for cookie in cookie_dict:
         if cookie["name"] in ["koa:sess", "koa:sess.sig"]:
             driver.add_cookie({
-                "domain": "glados.rocks",
+                "domain": "glados.cloud",
                 "name": cookie["name"],
                 "value": cookie["value"],
                 "path": "/",
             })
     
-    driver.get("https://glados.rocks")
+    driver.get("https://glados.cloud")
     WebDriverWait(driver, 240).until(
         lambda x: x.title != "Just a moment..."
     )
@@ -105,7 +105,7 @@ def glados(cookie_string):
     old_left_days = int(float(status_data["leftDays"]))
     print(f"【Status】Old left days:{old_left_days}")
 
-    driver.get("https://glados.rocks/console/checkin")
+    driver.get("https://glados.cloud/console/checkin")
     driver.find_elements(By.TAG_NAME, "button")[3].click()
     print("【Checkin】Clicked the button")
 
