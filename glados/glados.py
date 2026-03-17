@@ -110,7 +110,7 @@ def glados(cookie_string):
     driver.find_element(By.XPATH, s_checkin_button).click()
     print("【Checkin】Clicked the button")
 
-    s_checkin_content = "//div/div[@class='checkin-main-grid']/div[2]/div[3]/div"
+    s_checkin_content = "//div[@class='checkin-main-grid']/div[2]/div[3]/div[2]/span"
     WebDriverWait(driver, 10).until(
         EC.presence_of_element_located((By.XPATH, s_checkin_content))
     )
