@@ -1,6 +1,7 @@
 # encoding=utf8
 import io
 import sys
+import time
 import json
 import platform
 import subprocess
@@ -106,14 +107,12 @@ def glados(cookie_string):
     print(f"【Status】Old left days:{old_left_days}")
 
     driver.get("https://glados.cloud/console/checkin")
-    s_checkin_button = "//div[@class='checkin-main-grid']/div[2]/div[3]/button"
+    s_checkin_button = "//button[@class='checkin-cute-btn']"
     driver.find_element(By.XPATH, s_checkin_button).click()
     print("【Checkin】Clicked the button")
 
-    s_checkin_content = "//div[@class='checkin-main-grid']/div[2]/div[3]/button/span"
-    WebDriverWait(driver, 10).until(
-        EC.presence_of_element_located((By.XPATH, s_checkin_content))
-    )
+    time.sleep(5)
+    s_checkin_content = "//span[@class='checkin-btn-label']"
     checkin_content = driver.find_element(By.XPATH, s_checkin_content)
     print(f"【Checkin】Message content: {checkin_content.text}")
 
