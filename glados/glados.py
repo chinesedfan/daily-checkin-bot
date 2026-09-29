@@ -84,7 +84,7 @@ def glados(cookie_string):
 
     driver.delete_all_cookies()
     for cookie in cookie_dict:
-        if cookie["name"] in ["koa:sess", "koa:sess.sig"]:
+        if cookie["name"] in ["koa:sess", "koa:sess.sig", "gld:sess"]:
             driver.add_cookie({
                 "domain": "glados.cloud",
                 "name": cookie["name"],
