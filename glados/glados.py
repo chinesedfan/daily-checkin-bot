@@ -62,6 +62,7 @@ def glados_status(driver):
     status_query = status_query.replace("\n", "")
     resp = driver.execute_script("return " + status_query)
     resp = json.loads(resp["response"])
+    print(resp)
     return resp["code"], resp["data"]
 
 def glados(cookie_string):
