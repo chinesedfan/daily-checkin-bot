@@ -112,7 +112,7 @@ def glados(cookie_string):
     driver.find_element(By.XPATH, s_checkin_button).click()
     print("【Checkin】Clicked the button")
 
-    time.sleep(5)
+    time.sleep(20)
     s_checkin_content = "//span[@class='checkin-btn-label']"
     checkin_content = driver.find_element(By.XPATH, s_checkin_content)
     print(f"【Checkin】Message content: {checkin_content.text}")
