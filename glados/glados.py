@@ -11,6 +11,7 @@ import undetected_chromedriver as uc
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.remote.webdriver import By
+from selenium.common.exceptions import TimeoutException
 
 def get_driver_version():
     system = platform.system()
@@ -109,13 +110,23 @@ def glados(cookie_string):
 
     driver.get("https://glados.cloud/console/checkin")
     s_checkin_button = "//button[@class='checkin-cute-btn']"
+    s_checkin_content = "//span[@class='checkin-btn-label']"
+
+    old_text = driver.find_element(By.XPATH, s_checkin_content).text
+    print(f"【Checkin】Before: {old_text}")
+
     driver.find_element(By.XPATH, s_checkin_button).click()
     print("【Checkin】Clicked the button")
 
-    time.sleep(20)
-    s_checkin_content = "//span[@class='checkin-btn-label']"
-    checkin_content = driver.find_element(By.XPATH, s_checkin_content)
-    print(f"【Checkin】Message content: {checkin_content.text}")
+    try:
+        wait = WebDriverWait(driver, 300, poll_frequency=5)
+        wait.until(lambda d: "Got" in d.find_element(By.XPATH, s_checkin_content).text)
+        print("【Checkin】Text changed")
+    except TimeoutException:
+        print("【Checkin】Text did NOT change within 30s, reading current value anyway")
+
+    new_text = driver.find_element(By.XPATH, s_checkin_content).text
+    print(f"【Checkin】Message content: {new_text}")
 
     checkin_code = 0
     if checkin_code != -2:
@@ -124,7 +135,7 @@ def glados(cookie_string):
         print(f"【Status】Left days:{left_days}")
         message = f"{message}【Status】Left days:{left_days}\n"
 
-        if left_days != old_left_days + 1 and (not "Got" in checkin_content.text):
+        if left_days != old_left_days + 1 and (not "Got" in new_text):
             checkin_code = 2 # checkin fail
 
     driver.close()
