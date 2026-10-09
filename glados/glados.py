@@ -115,11 +115,12 @@ def glados(cookie_string):
     old_text = driver.find_element(By.XPATH, s_checkin_content).text
     print(f"【Checkin】Before: {old_text}")
 
-    driver.find_element(By.XPATH, s_checkin_button).click()
+    btn = driver.find_element(By.XPATH, s_checkin_button)
+    driver.execute_script("arguments[0].click();", btn)
     print("【Checkin】Clicked the button")
 
     try:
-        wait = WebDriverWait(driver, 300, poll_frequency=5)
+        wait = WebDriverWait(driver, 60, poll_frequency=5)
         wait.until(lambda d: "Got" in d.find_element(By.XPATH, s_checkin_content).text)
         print("【Checkin】Text changed")
     except TimeoutException:
